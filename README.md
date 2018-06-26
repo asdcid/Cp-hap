@@ -1,5 +1,5 @@
-# Chloroplast-Single-copy-direction-ratio-detection
-Detect the ratio of different directions of single copys in the chloroplast genome. 
+# Chloroplast-Single-copy-orientation-ratio-detection
+Detect the ratio of different orientations of single copys in the chloroplast genome. 
 
 ## Requirement
 python2.7 or higher
