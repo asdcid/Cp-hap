@@ -10,7 +10,7 @@ minimap2
 
 
 # Usage
-1. Copy run.sh, getDifferentDirectionCombine.py, parse.py to your working directory. These three scripts should be under the same directory, otherwise it doesn't work.
+1. Copy run.sh, getDifferentDirectionCombine.py and parse.py to your working directory. These three scripts should be under the same directory, otherwise they don't work.
 
 2. Set the path of minimap2 in run.sh, change the /path/of/minimap2/ to your minimap install path. If your minimap2 installed systemic, just delete the line "export PATH='/path/of/minimap2/':$PATH'.   
 ```
@@ -43,4 +43,4 @@ threads=
 ```
 ./run.sh
 ```
-The result will be $outputDir/result_$readName_$chloroplastGenomeName
+The result will be $outputDir/result_$readName_$chloroplastGenomeName.
