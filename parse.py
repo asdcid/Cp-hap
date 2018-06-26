@@ -106,7 +106,8 @@ def main():
     lsc         = int(sys.argv[3])
     ssc         = int(sys.argv[4])
     ir          = int(sys.argv[5])
-    minDistance = 2000
+    #the minimum distance to pass the conjunction 
+    minDistance = 1000
 
 
     positions   = []
