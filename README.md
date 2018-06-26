@@ -10,7 +10,7 @@ minimap2 (https://github.com/lh3/minimap2)
 
 
 # Installation
-No installation required, just download the file from github.
+No installation required, just download the pipeline from github.
 ```
 git clone https://github.com/asdcid/single-copy-direction-chloroplast.git
 ```
