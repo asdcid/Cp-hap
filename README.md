@@ -2,7 +2,7 @@
 Estimate the ratio of different directions of single copy in the chloroplast genome. 
 
 # Requirement
-python2.7
+python2.7 or higher
 
 minimap2
 
