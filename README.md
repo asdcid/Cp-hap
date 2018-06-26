@@ -11,7 +11,7 @@ minimap2
 
 # Usage
 1. Change this section in run.sh
-'''
+```
 #############################################################
 #the path of long-reads, reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
 reads=
@@ -30,4 +30,4 @@ readType=
 #how many threads you want to use, such as 10
 threads=
 #############################################################
-'''
+```
