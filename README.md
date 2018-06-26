@@ -10,7 +10,14 @@ minimap2
 
 
 # Usage
-1. Change this section in run.sh
+1. Copy run.sh, getDifferentDirectionCombine.py, parse.py to your working directory. These three scripts should be under the same directory, otherwise it doesn't work.
+
+2. Set the path of minimap2 in run.sh, change the /path/of/minimap2/ to your minimap install path. If your minimap2 installed systemic, just delete the line "export PATH='/path/of/minimap2/':$PATH'.   
+```
+#set path of minimap2
+export PATH='/path/of/minimap2/':$PATH
+```
+3. Change this section in run.sh
 ```
 #############################################################
 #the path of long-reads, reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
@@ -31,3 +38,9 @@ readType=
 threads=
 #############################################################
 ```
+
+4. run run.sh
+```
+./run.sh
+```
+The result will be $outputDir/result_$readName_$chloroplastGenomeName
