@@ -1,21 +1,21 @@
 # Chloroplast-Single-copy-direction-ratio-detection
 Detect the ratio of different directions of single copys in the chloroplast genome. 
 
-# Requirement
+## Requirement
 python2.7 or higher
 
 minimap2 (https://github.com/lh3/minimap2)
 
-# Introduction
+## Introduction
 
 
-# Installation
+## Installation
 No installation required, just download the pipeline from github.
 ```
 git clone https://github.com/asdcid/single-copy-direction-chloroplast.git
 ```
 
-# Usage
+## Usage
 1. Copy **run.sh**, **getDifferentDirectionCombine.py** and **parse.py** to your working directory. These three scripts should be under the same directory, otherwise they don't work.
 
 2. Set the path of minimap2 in run.sh, change the '/path/of/minimap2/' to your minimap install path. If your minimap2 installed systemic, just delete the line "export PATH='/path/of/minimap2/':$PATH'.   
