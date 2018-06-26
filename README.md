@@ -45,7 +45,7 @@ threads=
 ```
 The final result will be $outputDir/result_$readName_$chloroplastGenomeName.
 
-## run a test
+## Run a test
 Simply change the minimap2 path in run_test.sh as describe above, then run run_test.sh. The final result is test/result_reads.fa_Epau.format.fa.
 ```
 ./run_test.sh
