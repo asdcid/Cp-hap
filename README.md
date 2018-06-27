@@ -14,9 +14,6 @@ No installation required, just download the pipeline from github.
 git clone https://github.com/asdcid/Chloroplast-genome-single-copy-orientation-ratio-detection.git
 ```
 
-## Introduction
-
-
 ## Usage
 1. Copy **run.sh**, **getDifferentDirectionCombine.py** and **parse.py** to your working directory. These three scripts should be under the same directory, otherwise they don't work.
 
@@ -58,3 +55,24 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 ```
 ./run_test.sh
 ```
+
+## Introduction
+The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
+
+[figure]
+
+16 situtation
+
+8 (2 is typical, other not)
+
+pass 3 points
+
+50 vs 50 (if got enough long-reads)
+
+The general idea of this pipeline is that mapped all the long-reads to the 16 different combination chloroplast genomes, and then detech the number of long-read that pass three conjunctions support. Simple linearization of the reference set would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
+
+dis:
+long-read should cover three conjunctions. 
+
+assume cp have two invert repeats. 
+
