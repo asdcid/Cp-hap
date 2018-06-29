@@ -1,4 +1,4 @@
-# Chloroplast-Single-copy-orientation-ratio-detection
+# Chloroplast-genome-single-copy-orientation-ratio-detection
 Detect the ratio of different orientations of single copys in the chloroplast genome. 
 
 ## Requirement
@@ -27,16 +27,10 @@ export PATH='/path/of/minimap2/':$PATH
 #############################################################
 #the path of long-reads, reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
 reads=
-#the path of chloroplast genome, chloroplast genome should be in fasta(fa) format, not gzip, such as /path/genome.fa
+#the path of chloroplast genome, chloroplast genome should be in fasta format, not gzip, such as /path/genome.fa. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It doesn't matter which oritentation is for lsc, ssc and ir.
 chloroplastGenome=
 #the path of output dir, such as /path/summary
 outputDir=
-#length of long single copy, must be integer, such as 88787
-lengthLongSingleCopy=
-#length of short single copy, must be integer, such as 18421
-lengthShortSingleCopy=
-#length of invert repeat, must be integer, such as 26367
-lengthInvertRepeat=
 #read type, 'PacBio' or 'ONT' only, such as ONT
 readType=
 #how many threads you want to use, such as 10
@@ -58,8 +52,7 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 
 ## Background
 The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
-
-[figure]
+![Alt text] (https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/circular_different_orientation.jpg?raw=true "Title")
 
 16 situtation
 
