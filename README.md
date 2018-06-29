@@ -8,7 +8,7 @@ The chloroplast genome is a double-stranded DNA circular molecule of around 120 
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/orientation.jpg" />
  </p>
 
-Long single copy, short single copy or inverted repeat can have four different orientations: original, reverse(r), complement(c) and reverse complement(rc). Technically, there are 256 different orientation combinations. However, half of them (128) is the complementary strand of the other half. Therefore, only 128 possible structures.
+Long single copy, short single copy or inverted repeat can have four different orientations: original, reversed(r), complementary(c) and reversed complementary(rc). Technically, there are 256 different orientation combinations. However, half of them (128) is the complementary strand of the other half. Therefore, only 128 possible structures.
 <p>
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/equal_structure.png" />
  </p>
@@ -99,9 +99,9 @@ LSC:    long single copy
 SSC:    short single copy
 IR: invert repeat
 
-r:  reverse sequence
-c:  complemented sequence
-rc: reversed and complemented sequence
+r:  reversed sequence
+c:  complementary sequence
+rc: reversed complementary sequence
 ```
 
 In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and "LSC_IR_SSCrc_IRrc", which are the single copys (long/short) have same/different orientation. The orientation of inverted repeats should be the same between these two structures. And the number of reads supported each structure should be similar (50% vs 50%) if you have enough read cover at least three conjunctions (see above).
