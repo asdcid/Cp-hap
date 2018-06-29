@@ -53,7 +53,7 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 ## Background
 The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
 <p>
-  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/circular_different_orientation.jpg" />
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/circular_different_orientation.jp" />
  </p>
 
 16 situtation
