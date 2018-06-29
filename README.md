@@ -13,9 +13,10 @@ Long single copy, short single copy or inverted repeat can have four different o
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/equal_structure.png" />
  </p>
 
+
 So far, only two structures are observed: the single copys (long/short) have same orientation, have different orientations.  
 
-In order to detech whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first creates a reference set containing all 128 different structures, and then map all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), calcuated the number of supported read for each structure.
+In order to detech whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first created a reference set containing all 128 different  chloroplast genome structures, and then mapped all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), calcuated the number of supported read for each structure.
 
 The reads must be long enough to cover at least three conjunctions, otherwise it cannot unique map to one structure (The long single copy is duplicated here to make it clear).
 <p>
@@ -29,7 +30,6 @@ In addition, simple linearization of the chloroplast genome would risk failing t
 python2.7 or higher
 
 minimap2 (https://github.com/lh3/minimap2)
-
 
 
 ## Installation
@@ -74,7 +74,7 @@ XXXX
 
 The chloroplast genome file should be a fasta file containing three sequences: lsc (long single copy), ssc (short single copy) and ir (inverted repeat). The sequence names must be "lsc", "ssc" and "ir". The sequences can be in one line or multiple lines. It is no requirment for the direction of each sequence.
 
-We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the different orientation structure combination genome file by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeats, this pipeline may not work well.
+We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the reference set (containing 128 different chloroplast genomestructures) by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeat, this pipeline may not work well.
 
 
 4. run run.sh
@@ -90,6 +90,21 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 ```
 
 ### OutputFiles explanation
-Using the test result as an example, there are three outputFiles: 
+Using the test result as an example, there are three outputFiles: dir_directions_Epau.format.fa (reference set, containing 128 different chloroplast genome structures), reads.fa.pad (minimap2 outputFile) and result_reads.fa_Epau.format.fa (final result file).
 
-50 vs 50 (if got enough long-reads)
+In the final result file, the chloroplast genome structure is named in something like "LSC_IR_SSC_IRrc".
+```
+Structure name explanation
+LSC:    long single copy
+SSC:    short single copy
+IR: invert repeat
+
+r:  reverse sequence
+c:  complemented sequence
+rc: reversed and complemented sequence
+```
+
+In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and "LSC_IR_SSCrc_IRrc", which are the single copys (long/short) have same/different orientation. The orientation of inverted repeats should be the same between these two structures. And the number of reads supported each structure should be similar (50% vs 50%) if you have enough read cover at least three conjunctions (see above).
+
+However, if the ratio of these two structures are far away from 50% vs 50%, or you only get one structure or more than two structures, it suggests that it would be some interesting stories behind your chloroplast genome.
+
