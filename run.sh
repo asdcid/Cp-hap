@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#$ -pe threads 20
-#$ -cwd
-#$ -N default
-
-
 #if this script has every error, exit
 set -e
 
@@ -12,22 +7,16 @@ set -e
 export PATH='/path/of/minimap2/':$PATH
 
 #############################################################
-#reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
-reads='query/blasr_RB7_C4.fasta' 
-#chloroplast genome should be in fasta format, not gzip, such as /path/genome.fa
-chloroplastGenome='../../assembly/ref/Epau.format.fa' 
+#the path of long-reads, reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
+reads= 
+#the path of chloroplast genome, chloroplast genome should be in fasta format, not gzip, such as /path/genome.fa. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It doesn't matter which oritentation is for lsc, ssc and ir.
+chloroplastGenome=
 #the path of output dir, such as /path/summary
-outputDir='result'
-#length of long single copy, must be integer, such as 88787
-lengthLongSingleCopy=88787 
-#length of short single copy, must be integer, such as 18421
-lengthShortSingleCopy=18421
-#length of invert repeat, must be integer, such as 26367
-lengthInvertRepeat=26367 
+outputDir=
 #read type, 'PacBio' or 'ONT' only, such as ONT
-readType=ONT
+readType=
 #how many threads you want to use, such as 10
-threads=20
+threads=
 #############################################################
 
 
@@ -61,10 +50,7 @@ outputFile=$outputDir/result_$(basename $reads)_$(basename $chloroplastGenome)
 echo "creating different references"
 ./getDifferentDirectionCombine.py \
     $chloroplastGenome \
-    $reference \
-    $lengthLongSingleCopy \
-    $lengthShortSingleCopy \
-    $lengthInvertRepeat 
+    $reference 
 
 #run minimap2
 echo "mapping long-reads to reference using minimap2"
@@ -80,11 +66,9 @@ minimap2 \
 #check orientation ratio
 echo "parsing result"
 ./parse.py \
+    $chloroplastGenome \
     $minimapOutput \
-    $outputFile \
-    $lengthLongSingleCopy \
-    $lengthShortSingleCopy \
-    $lengthInvertRepeat 
+    $outputFile 
 
 
 

@@ -9,43 +9,39 @@ import sys
 import os
 
  
-def loadFile(inputFile, minDistance, positions, outputFile):
+def getLength(genomeFile):
+    seqs    = {'lsc' : '',
+               'ssc' : '',
+               'ir'  : ''
+              }
+
+    with open(genomeFile) as f:
+        for line in f:
+            line    = line.strip()
+            if not line:
+                continue
+            if line[0] == '>':
+                if line[1 : ]   == 'lsc':
+                    seq     =  'lsc'
+                elif line[1 : ] == 'ssc':
+                    seq     = 'ssc'
+                elif line[1 : ] == 'ir':
+                    seq     = 'ir'
+                continue
+            seqs[seq] += line
+
+    lsc = len(seqs['lsc'])
+    ssc = len(seqs['ssc'])
+    ir  = len(seqs['ir'])
+
+    return lsc, ssc, ir
+
+def loadFile(alignmentFile, minDistance, positions, outputFile):
     o   = open(outputFile, 'w+')
-    directions  = {
-                    'lsc1ir1ssc1ir1' : 0,
-                    'lsc1ir0ssc0ir1' : 0,
-                    'lsc1ir0ssc0ir0' : 0,
-                    'lsc0ir0ssc0ir1' : 0,
-                    'lsc0ir0ssc0ir0' : 0,
-                    'lsc1ir1ssc1ir0' : 0, 
-                    'lsc0ir0ssc1ir0' : 0,
-                    'lsc0ir0ssc1ir1' : 0,
-                    'lsc0ir1ssc1ir1' : 0,
-                    'lsc0ir1ssc1ir0' : 0,
-                    'lsc1ir1ssc0ir1' : 0,
-                    'lsc1ir1ssc0ir0' : 0,
-                    'lsc0ir1ssc0ir0' : 0,
-                    'lsc0ir1ssc0ir1' : 0,
-                    'lsc1ir0ssc1ir1' : 0,
-                    'lsc1ir0ssc1ir0' : 0,
-                  }
-    atypicals = [
-                    'lsc1ir1ssc1ir1',
-                    'lsc1ir0ssc0ir0',
-                    'lsc0ir0ssc0ir0',
-                    'lsc1ir1ssc1ir0',
-                    'lsc0ir0ssc1ir0',
-                    'lsc0ir1ssc1ir1',
-                    'lsc0ir1ssc1ir0',
-                    'lsc1ir1ssc0ir1',
-                    'lsc1ir1ssc0ir0',
-                    'lsc0ir1ssc0ir0',
-                    'lsc0ir1ssc0ir1',
-                    'lsc1ir0ssc1ir0'
-                 ]
+    directions  = {}
 
     seqNames       = {}
-    with open(inputFile) as f:
+    with open(alignmentFile) as f:
         for line in f:
             line    = line.strip()
             if not line:
@@ -66,6 +62,8 @@ def loadFile(inputFile, minDistance, positions, outputFile):
                 pointC  = positions[i + 3] + minDistance
                 if pointA <= start < pointB:
                     if pointC <= end:
+                        if not target in directions:
+                            directions[target] = 0
                         #because double up the genome, the read can map twice to the genome, "names" can aviod calculating one mapping twice.
                         if not target in seqNames:
                             seqNames[target]      = {}
@@ -79,35 +77,21 @@ def loadFile(inputFile, minDistance, positions, outputFile):
                     i += 1
 
     #output result
+    o.write('Structure_name\tnumber_of_supported_reads\n')
+    for direction in directions:
+        o.write('%s:\t%s\n' % (direction, directions[direction]))
 
-    o.write('Typical structures:\n')
-    o.write('lsc0ir0ssc0ir1\t%d\n'  % directions['lsc0ir0ssc0ir1'])
-    o.write('lsc1ir0ssc1ir1\t%d\n'  % directions['lsc1ir0ssc1ir1'])
-    o.write('lsc1ir0ssc0ir1\t%d\n'  % directions['lsc1ir0ssc0ir1'])
-    o.write('lsc0ir0ssc1ir1\t%d\n'  % directions['lsc0ir0ssc1ir1'])
-    sameDirection   = directions['lsc0ir0ssc0ir1'] + directions['lsc1ir0ssc1ir1']
-    diffDirection   = directions['lsc0ir0ssc1ir1'] + directions['lsc1ir0ssc0ir1']
-    o.write('\n')
-    o.write('Number of read support that long single copy and short single copy have same direction:\t%d\n' % sameDirection)
-    o.write('Number of read support that long single copy and short single copy have different direction:\t%d\n' % diffDirection)
-
-    o.write('\n')
-    o.write('\n')
-    o.write('Atypical structures:\n')
-    for atypical in atypicals:
-        o.write('%s\t%d\n' % (atypical, directions[atypical])) 
 
     o.close()
 
 
 def main():
-    inputFile   = sys.argv[1]
-    outputFile  = sys.argv[2]
-    lsc         = int(sys.argv[3])
-    ssc         = int(sys.argv[4])
-    ir          = int(sys.argv[5])
-    #the minimum distance to pass the conjunction 
-    minDistance = 1000
+    genomeFile      = sys.argv[1]
+    outputFile      = sys.argv[2]
+    alignmentFile   = sys.argv[3]
+    minDistance = 2000
+
+    lsc, ssc, ir = getLength(genomeFile)
 
 
     positions   = []
@@ -121,7 +105,7 @@ def main():
     positions.append(lsc + ir + ssc + ir + lsc + ir + ssc)
     positions.append(lsc + ir + ssc + ir + lsc + ir + ssc + ir)
 
-    loadFile(inputFile, minDistance, positions, outputFile)
+    loadFile(alignmentFile, minDistance, positions, outputFile)
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #if this script has every error, exit
 set -e
 
@@ -8,22 +7,16 @@ set -e
 export PATH='/home/raymond/devel/miniasm/minimap2/':$PATH
 
 #############################################################
-#reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
+#the path of long-reads, reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
 reads='testData/reads.fa' 
-#chloroplast genome should be in fasta format, not gzip, such as /path/genome.fa
+#the path of chloroplast genome, chloroplast genome should be in fasta format, not gzip, such as /path/genome.fa. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It doesn't matter which oritentation is for lsc, ssc and ir.
 chloroplastGenome='testData/Epau.format.fa' 
 #the path of output dir, such as /path/summary
 outputDir='test'
-#length of long single copy, must be integer, such as 88787
-lengthLongSingleCopy=88787 
-#length of short single copy, must be integer, such as 18421
-lengthShortSingleCopy=18421
-#length of invert repeat, must be integer, such as 26367
-lengthInvertRepeat=26367 
 #read type, 'PacBio' or 'ONT' only, such as ONT
 readType=ONT
 #how many threads you want to use, such as 10
-threads=10
+threads=20
 #############################################################
 
 
@@ -57,10 +50,7 @@ outputFile=$outputDir/result_$(basename $reads)_$(basename $chloroplastGenome)
 echo "creating different references"
 ./getDifferentDirectionCombine.py \
     $chloroplastGenome \
-    $reference \
-    $lengthLongSingleCopy \
-    $lengthShortSingleCopy \
-    $lengthInvertRepeat 
+    $reference 
 
 #run minimap2
 echo "mapping long-reads to reference using minimap2"
@@ -76,11 +66,9 @@ minimap2 \
 #check orientation ratio
 echo "parsing result"
 ./parse.py \
-    $minimapOutput \
+    $chloroplastGenome \
     $outputFile \
-    $lengthLongSingleCopy \
-    $lengthShortSingleCopy \
-    $lengthInvertRepeat 
+    $minimapOutput 
 
 
 

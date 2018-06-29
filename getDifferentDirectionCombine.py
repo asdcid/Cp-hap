@@ -4,77 +4,137 @@
 
 Created by www on 12:58 am, May 31, 2017
 """
+from __future__ import print_function
 import sys
 import os
 
-complement = {'A' : 'T', 'C' : 'G', 'G' : 'C', 'T' : 'A', 'N' : 'N'} 
+complement_dict = { 'A' : 'T', 
+                    'C' : 'G', 
+                    'G' : 'C', 
+                    'T' : 'A', 
+                    'N' : 'N',
+                    'a' : 't',            
+                    'c' : 'g',            
+                    'g' : 'c',            
+                    't' : 'a',            
+                    'n' : 'n'            
+                  } 
 
 def reverse_complement(seq):    
     bases = list(seq) 
-    bases = reversed([complement.get(base,base) for base in bases])
+    bases = [complement_dict.get(base,base) for base in bases]
+    bases = bases[ : : -1]
     bases = ''.join(bases)
     return bases
 
+def complement(seq):    
+    bases = list(seq) 
+    bases = [complement_dict.get(base,base) for base in bases]
+    bases = ''.join(bases)
+    return bases
 
+def reverse(seq):
+    bases = seq[ : : -1]
+    return bases
  
-def loadFile(inputFile, lscLength, sscLength, irLength):
-    irs = {'ir0' : '',
-           'ir1' : ''
-          }
-    sscs = {'ssc0' : '', 
-            'ssc1' : ''
-           }
-    lscs = {'lsc0' : '',
-            'lsc1' : ''
-           }
-    seqs = {}
-    seq  = ''
-    with open(inputFile) as f:
+def loadFile(genomeFile):
+
+    lscs    = {}
+    sscs    = {}
+    irs     = {}
+
+    seqs    = {'lsc' : '',
+               'ssc' : '',
+               'ir'  : ''
+              }
+
+    genomes                     = {}
+    genomes_ori                 = {}
+    genomes_noDuplicate         = {}
+    names                       = {}
+
+    with open(genomeFile) as f:
         for line in f:
             line    = line.strip()
             if not line:
                 continue
             if line[0] == '>':
+                if line[1 : ]   == 'lsc':
+                    seq     =  'lsc'
+                elif line[1 : ] == 'ssc':
+                    seq     = 'ssc'
+                elif line[1 : ] == 'ir':
+                    seq     = 'ir'
+                else:
+                    print('ERROR: The number of sequence in genome fasta file must be "lsc", "ssc" or "ir"')
+                    sys.exit()
                 continue
-            seq += line
-        
-    lsc0 = seq[ : lscLength]
-    lsc1 = reverse_complement(seq[ : lscLength])
-    lscs['lsc0'] = lsc0
-    lscs['lsc1'] = lsc1
+            seqs[seq] += line
+    for seq in seqs:
+        if len(seqs[seq]) == 0:
+            print('ERROR: The length of %s is 0, please check the format of genome fasta file' % seq)
 
-    ir0 = seq[lscLength : lscLength + irLength]
-    ir1 = reverse_complement(seq[lscLength : lscLength + irLength])
-    irs['ir0'] = ir0
-    irs['ir1'] = ir1
-    
-    ssc0 = seq[lscLength + irLength : lscLength + irLength + sscLength]
-    ssc1 = reverse_complement(seq[lscLength + irLength : lscLength + irLength + sscLength])
-    sscs['ssc0'] = ssc0
-    sscs['ssc1'] = ssc1
+    lscs['LSC_']    = seqs['lsc']
+    lscs['LSCr_']   = reverse(seqs['lsc'])
+    lscs['LSCc_']   = complement(seqs['lsc'])
+    lscs['LSCrc_']  = reverse_complement(seqs['lsc'])
+
+    sscs['_SSC_']    = seqs['ssc']
+    sscs['_SSCr_']   = reverse(seqs['ssc'])
+    sscs['_SSCc_']   = complement(seqs['ssc'])
+    sscs['_SSCrc_']  = reverse_complement(seqs['ssc'])
+
+    irs['IR']      = seqs['ir']
+    irs['IRr']     = reverse(seqs['ir'])
+    irs['IRc']     = complement(seqs['ir'])
+    irs['IRrc']    = reverse_complement(seqs['ir'])
     
     for lscDirection in lscs:
         for sscDirection in sscs:
             for irDirectionA in irs:
                 for irDirectionB in irs:
-                    seqs[lscDirection + irDirectionA + sscDirection + irDirectionB] = lscs[lscDirection] + irs[irDirectionA] + sscs[sscDirection] + irs[irDirectionB] + lscs[lscDirection] + irs[irDirectionA] + sscs[sscDirection] + irs[irDirectionB]
+                    genomes[lscDirection + irDirectionA + sscDirection + irDirectionB]  = lscs[lscDirection] + irs[irDirectionA] + sscs[sscDirection] + irs[irDirectionB] + lscs[lscDirection]
+                    genomes_ori[lscDirection + irDirectionA + sscDirection + irDirectionB]  = lscs[lscDirection] + irs[irDirectionA] + sscs[sscDirection] + irs[irDirectionB]
 
-    return seqs
+    #remove duplicate genomes
+    genome_rc = {}
+    for name in genomes:
+        genome_rc[name] = reverse_complement(genomes[name])
 
-def output(outputDir, seqs):
+    for name in genome_rc:
+        seq = genome_rc[name]
+        for nameB in genomes:
+            if seq  == genomes[nameB]:
+                key     = [name, nameB]
+                key.sort()
+                key     = '%s+%s' % (key[0], key[1])
+                names[key] = ''
+                break
+    #double-up the genome, in case some reads mapped to the "cut point"
+    for key in names:
+        name    = key.split('+')[0]
+        genomes_noDuplicate[name]   = genomes_ori[name] + genomes_ori[name]
+
+    return genomes_noDuplicate
+
+def output(outputDir, genomes):
     with open(outputDir, 'w+') as o:
-        for name in seqs:
-            o.write('>%s\n%s\n' % (name, seqs[name]))
+        o.write('LSC:\tlong single copy\n')
+        o.write('SSC:\tshort single copy\n')
+        o.write('IR:\tinvert repeat\n')
+        o.write('r:\treverse sequence\n')
+        o.write('c:\tcomplemented sequence\n')
+        o.write('rc:\treversed and complemented sequence\n')
+        for name in genomes:
+            o.write('>%s\n%s\n' % (name, genomes[name]))
     
 
 def main():
-    inputFile   = sys.argv[1]
-    outputDir   = sys.argv[2]
-    lscLength   = int(sys.argv[3])
-    sscLength   = int(sys.argv[4])
-    irLength    = int(sys.argv[5])
-    seqs    = loadFile(inputFile, lscLength, sscLength, irLength)
-    output(outputDir, seqs) 
+    genomeFile   = sys.argv[1]
+    outputDir    = sys.argv[2]
+
+    genomes         = loadFile(genomeFile)
+    output(outputDir, genomes) 
  
 if __name__ == '__main__':
     main()
