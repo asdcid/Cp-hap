@@ -7,12 +7,15 @@ Detect the ratio of different orientations of single copys in the chloroplast ge
 ## Background
 The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
 <p>
-  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/cp_structure.jpg" />
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/orientation.jpg" />
  </p>
 
-If we should them in linear:
+Long single copy, short single copy or inverted repeat can have four different orientations: original, reverse(r), complement(c) and reverse complement(rc). Technically, there are 256 different orientation combinations. However, half of them (128) is the complementary strand of the other half. Therefore, only 128 possible structures.
+<p>
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/equal_structure.png" />
+ </p>
 
-
+Indeed, only two structures were observed: the single copys (long/short) have same orientation, have different orientation.  
 
 pass 3 points
 
