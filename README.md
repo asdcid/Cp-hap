@@ -2,10 +2,8 @@
 Detect the ratio of different orientations of single copys in the chloroplast genome. 
 
 
-
-
 ## Background
-The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
+The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copys (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
 <p>
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/orientation.jpg" />
  </p>
@@ -15,18 +13,17 @@ Long single copy, short single copy or inverted repeat can have four different o
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/equal_structure.png" />
  </p>
 
-Indeed, only two structures were observed: the single copys (long/short) have same orientation, have different orientation.  
+So far, only two structures are observed: the single copys (long/short) have same orientation, have different orientations.  
 
-pass 3 points
+In order to detech whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first creates a reference set containing all 128 different structures, and then map all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), calcuated the number of supported read for each structure.
 
-50 vs 50 (if got enough long-reads)
+The reads must be long enough to cover at least three conjunctions, otherwise it cannot unique map to one structure (The long single copy is duplicated here to make it clear).
+<p>
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/three_conjunction.jpg" />
+ </p>
 
-The general idea of this pipeline is that mapped all the long-reads to the 16 different combination chloroplast genomes, and then detech the number of long-read that pass three conjunctions support. Simple linearization of the reference set would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
+In addition, simple linearization of the chloroplast genome would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
 
-dis:
-long-read should cover three conjunctions. 
-
-assume cp have two invert repeats. 
 
 ## Requirement
 python2.7 or higher
@@ -95,4 +92,4 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 ### OutputFiles explanation
 Using the test result as an example, there are three outputFiles: 
 
-
+50 vs 50 (if got enough long-reads)
