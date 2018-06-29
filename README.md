@@ -1,6 +1,30 @@
 # Chloroplast-genome-single-copy-orientation-ratio-detection
 Detect the ratio of different orientations of single copys in the chloroplast genome. 
 
+
+
+
+## Background
+The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
+<p>
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/cp_structure.jpg" />
+ </p>
+
+If we should them in linear:
+
+
+
+pass 3 points
+
+50 vs 50 (if got enough long-reads)
+
+The general idea of this pipeline is that mapped all the long-reads to the 16 different combination chloroplast genomes, and then detech the number of long-read that pass three conjunctions support. Simple linearization of the reference set would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
+
+dis:
+long-read should cover three conjunctions. 
+
+assume cp have two invert repeats. 
+
 ## Requirement
 python2.7 or higher
 
@@ -38,6 +62,21 @@ threads=
 #############################################################
 ```
 
+Example format of chloroplast genome:
+```
+>lsc
+XXXX
+>ssc
+XXXX
+>ir
+XXXX
+```
+
+The chloroplast genome file should be a fasta file containing three sequences: lsc (long single copy), ssc (short single copy) and ir (inverted repeat). The sequence names must be "lsc", "ssc" and "ir". The sequences can be in one line or multiple lines. It is no requirment for the direction of each sequence.
+
+We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the different orientation structure combination genome file by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeats, this pipeline may not work well.
+
+
 4. run run.sh
 ```
 ./run.sh
@@ -50,24 +89,7 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 ./run_test.sh
 ```
 
-## Background
-The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants，The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions.The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb. However, the orientation of the two single copy (long/short) can be the same or different. In general, the ratio between the two orientations should be 50% vs 50%. 
-<p>
-  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/cp_structure.jpg" />
- </p>
+### OutputFiles explanation
+Using the test result as an example, there are three outputFiles: 
 
-If we should them in linear:
-
-
-
-pass 3 points
-
-50 vs 50 (if got enough long-reads)
-
-The general idea of this pipeline is that mapped all the long-reads to the 16 different combination chloroplast genomes, and then detech the number of long-read that pass three conjunctions support. Simple linearization of the reference set would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
-
-dis:
-long-read should cover three conjunctions. 
-
-assume cp have two invert repeats. 
 
