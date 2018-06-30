@@ -119,12 +119,6 @@ def loadFile(genomeFile):
 
 def output(outputDir, genomes):
     with open(outputDir, 'w+') as o:
-        o.write('LSC:\tlong single copy\n')
-        o.write('SSC:\tshort single copy\n')
-        o.write('IR:\tinvert repeat\n')
-        o.write('r:\treverse sequence\n')
-        o.write('c:\tcomplemented sequence\n')
-        o.write('rc:\treversed and complemented sequence\n')
         for name in genomes:
             o.write('>%s\n%s\n' % (name, genomes[name]))
     
