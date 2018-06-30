@@ -83,6 +83,7 @@ We assume the two inverted repeats are identical. If there are only few base pai
 ```
 The final result will be $outputDir/result_$readName_$chloroplastGenomeName.
 
+
 ## Run a test
 Simply point out the minimap2 path in run_test.sh as describe above, then run run_test.sh. The final result is test/result_reads.fa_Epau.format.fa.
 ```
@@ -108,3 +109,7 @@ In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and 
 
 However, if the ratio of these two structures are far away from 50% vs 50%, or you only get one structure or more than two structures, it suggests that it would be some interesting stories behind your chloroplast genome.
 
+For chloroplast genome which has only one inverted repeat, it is supposed to observe only one structure.
+
+## Chloroplast genome which has only one inverted repeat
+Use the scripts in scripts_one_ir_chloroplast_genome, the setting and usage is the same as above. We changed the cutoff of discarding reads from failed to cover three conjunctions to failed to cover two conjunctions.
