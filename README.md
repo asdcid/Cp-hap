@@ -3,7 +3,7 @@ Detect the ratio of different orientations of single copies in the chloroplast g
 
 
 ## Background
-The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants. The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions. The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb, and in some species only one inverted repeat presents. However, the orientations of the two single copies (long/short) can be identical or different for those chloroplast genomes have two inverted repeats.  
+The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants. The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions. The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb, and in some species only one inverted repeat presents. However, the orientations of the two single copies (long/short) can be identical or different for those chloroplast genomes which have two inverted repeats.  
 <p>
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/orientations.jpg" />
  </p>
@@ -16,7 +16,7 @@ Long single copy, short single copy or inverted repeat can have four different o
 
 So far, only two structures are observed: the two single copies (long/short) with the identical orientation and with different orientations.  
 
-In order to detect whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first created a reference set containing all 128 different chloroplast genome structures. Then we mapped all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), and calcuated the number of supported read for each structure.
+In order to detect whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first created a reference set containing all 128 different chloroplast genome structures. Then we mapped all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), and calcuated the number of supported reads for each structure.
 
 The reads must be long enough to cover at least three conjunctions, otherwise it cannot uniquely map to one structure (The long single copy is duplicated here to make it clear). However, some chloroplast genomes only have one inverted repeat, therefore reads only need to cover at least two conjunctions to support the structure.
 <p>
@@ -107,9 +107,9 @@ c:  complementary sequence
 rc: reversed complementary sequence
 ```
 
-In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and "LSC_IR_SSCrc_IRrc", which are the single copies (long/short) with the identical or different orientations. The orientation of inverted repeats should be identical between these two structures. And the number of reads supporting each structure should be similar (50% vs 50%) if you have enough reads cover at least three conjunctions (see above).
+In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and "LSC_IR_SSCrc_IRrc", which are the single copies (long/short) with the identical or different orientations. The orientation of inverted repeats should be identical between these two structures. And the number of reads supporting each structure should be similar (50% vs 50%) if you have enough reads covering at least three conjunctions (see above).
 
-However, if the ratio of these two structures are far away from 50% vs 50%, or you only get one structure or more than two structures, it suggests there are some interesting stories behind your chloroplast genome.
+However, if the ratio of these two structures is far away from 50% vs 50%, or you get only one structure or more than two structures, it suggests there are some interesting stories behind your chloroplast genome.
 
 For chloroplast genome which has only one inverted repeat, it is supposed to observe only one structure.
 
