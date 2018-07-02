@@ -74,7 +74,7 @@ XXXX
 
 The chloroplast genome file should be a fasta file containing three sequences: lsc (long single copy), ssc (short single copy) and ir (inverted repeat). The sequence names must be "lsc", "ssc" and "ir". The sequences can be in one line or multiple lines. It is no requirement for the direction of each sequence.
 
-We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the reference set (containing 128 different chloroplast genomestructures) by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeat, this pipeline may not work well.
+We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the reference set (containing 128 different chloroplast genome structures) by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeat, this pipeline may not work well.
 
 
 4. run run.sh
