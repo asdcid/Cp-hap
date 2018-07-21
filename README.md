@@ -93,7 +93,7 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 ```
 
 ### OutputFiles explanation
-Using the test result as an example, there are three outputFiles: dir_directions_Epau.format.fa (reference set, containing 128 different chloroplast genome structures), reads.fa.pad (minimap2 outputFile) and result_reads.fa_Epau.format.fa (final result file).
+Using the test result as an example, there are three outputFiles: dir_directions_Epau.format.fa (reference set, containing 128 different chloroplast genome structures), reads.fa.pad (minimap2 outputFile) and result_Epau.format.fa_reads.fa (final result file).
 
 In the final result file, the chloroplast genome structure is named in something like "LSC_IR_SSC_IRrc".
 ```
