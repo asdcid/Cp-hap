@@ -89,7 +89,7 @@ def main():
     genomeFile      = sys.argv[1]
     outputFile      = sys.argv[2]
     alignmentFile   = sys.argv[3]
-    minDistance = 2000
+    minDistance = 1000
 
     lsc, ssc, ir = getLength(genomeFile)
 
