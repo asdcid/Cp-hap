@@ -40,11 +40,11 @@ fi
 mkdir -p $outputDir
 
 #minimap2 output
-minimapOutput=$outputDir/$(basename $reads).pad
+minimapOutput=$outputDir/$(basename ${reads/.gz//}).pad
 #combinations of different directions of single copy
 reference=$outputDir/dir_directions_$(basename $chloroplastGenome)
 #final output result
-outputFile=$outputDir/result_$(basename $chloroplastGenome)_$(basename $reads)
+outputFile=$outputDir/result_$(basename $chloroplastGenome)_$(basename ${reads/.gz//})
 
 #get combinations of different direction of single copy
 echo "creating different references"
