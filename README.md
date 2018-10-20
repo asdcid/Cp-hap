@@ -1,6 +1,7 @@
 # Chloroplast-genome-single-copy-orientation-ratio-detection
 Detect the ratio of different orientations of single copies in the chloroplast genome. 
 
+# IR fixed orientation
 
 ## Background
 The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants. The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions. The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb, and in some species only one inverted repeat presents. However, the orientations of the two single copies (long/short) can be identical or different for those chloroplast genomes which have two inverted repeats.  
@@ -109,8 +110,6 @@ rc: reversed complementary sequence
 
 In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and "LSC_IR_SSCrc_IRrc", which are the single copies (long/short) with the identical or different orientations. The orientation of inverted repeats should be identical between these two structures. And the number of reads supporting each structure should be similar (50% vs 50%) if you have enough reads covering at least three conjunctions (see above).
 
-However, if the ratio of these two structures is far away from 50% vs 50%, or you get only one structure or more than two structures, it suggests there are some interesting stories behind your chloroplast genome.
-
-For chloroplast genome which has only one inverted repeat, it is supposed to observe only one structure.
+However, if the ratio of these two structures is far away from 50% vs 50%, or you get only one structure or more than two structures, it suggests that the orientation of two "IR" are not inverted or there are some interesting stories behind your chloroplast genome. For example, the _Selaginella tamariscina_ chloroplast genome has a positioned repeats (two "inverted repeats" in the same orientation instead of inverted). In this case, two structure will be observed:LSCrc_IR_SSCrc_IRrc and LSC_IR_SSC_IRrc. 
 
 
