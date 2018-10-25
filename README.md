@@ -40,27 +40,21 @@ git clone https://github.com/asdcid/Chloroplast-genome-single-copy-orientation-r
 ```
 
 ## Usage
-1. Copy **run.sh**, **getDifferentDirectionCombine.py** and **parse.py** to your working directory. These three scripts should be under the same directory, otherwise they don't work.
-
-2. Set the path of minimap2 in run.sh, change the '/path/of/minimap2/' to your minimap install path. If your minimap2 installed systemic, just delete the line "export PATH='/path/of/minimap2/':$PATH'.   
+1. Set the path of minimap2 , if your minimap2 not installed systemic 
 ```
-#set path of minimap2
 export PATH='/path/of/minimap2/':$PATH
 ```
-3. Change this section in run.sh
+2. run SCID
 ```
-#############################################################
-#the path of long-reads, reads can be fastq(fq), fasta(fa), gzip or not, such as /path/long-read.fa
-reads=
-#the path of chloroplast genome, chloroplast genome should be in fasta format, not gzip, such as /path/genome.fa. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It doesn't matter which oritentation is for lsc, ssc and ir.
-chloroplastGenome=
-#the path of output dir, such as /path/summary
-outputDir=
-#read type, 'PacBio' or 'ONT' only, such as ONT
-readType=
-#how many threads you want to use, such as 10
-threads=
-#############################################################
+Usage: SCID -r reads -g chloroplastGenome.fa -o outputDir [options]
+Required:
+    -r      the path of long-read file in fa/fq format, can be compressed(.gz).
+    -g      the path of chloroplast genome, chloroplast genome should be in fa format, not gzip. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It does not matter which oritentation is for lsc, ssc and ir.
+    -o      the path of outputDir.
+Options:
+    -t      number of threads. Default is 1.
+    -x      readType, only can be map-pb (PacBio reads) or map-ont (Nanopore reads). Default is map-pb.
+    -d      minimun distance of exceeding the first and last conjunctions (such as lsc/ir and ir/ssc). 1 means 1 bp, 1000 means 1 kb. Default is 1000.
 ```
 
 Example format of chloroplast genome:
@@ -75,17 +69,10 @@ XXXX
 
 The chloroplast genome file should be a fasta file containing three sequences: lsc (long single copy), ssc (short single copy) and ir (inverted repeat). The sequence names must be "lsc", "ssc" and "ir". The sequences can be in one line or multiple lines. It is no requirement for the direction of each sequence.
 
-We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the reference set (containing 128 different chloroplast genome structures) by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeat, this pipeline may not work well.
+We assume the two inverted repeats are identical. If there are only few base pairs difference between the two inverted repeats, just choose one of them. If the difference is huge, you need to create the reference set by yourself, and then run minimap2 and parse.py. For the chloroplast genome which only has one inverted repeat, this pipeline may not work well.
 
 
-4. run run.sh
-```
-./run.sh
-```
 The final result will be $outputDir/result_$readName_$chloroplastGenomeName.
-
-## Chloroplast genome which has only one inverted repeat
-To detect the ratio of single copies in the chloroplast genome which has only one inverted repeat, use the scripts in scripts_one_ir_chloroplast_genome. The setting and usage are the same as above. We changed the cutoff of discarding reads from failed to cover three conjunctions to failed to cover two conjunctions.
 
 ## Run a test
 Simply point out the minimap2 path in run_test.sh as describe above, then run run_test.sh. The final result is test/result_reads.fa_Epau.format.fa.
