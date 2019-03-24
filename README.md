@@ -1,4 +1,4 @@
-# Chloroplast-genome-single-copy-orientation-ratio-detection
+# Chloroplast-genome-single-copy-orientation-ratio-detection (Cp-hap)
 Detect the ratio of different orientations of single copies in the chloroplast genome. 
 
 # IR fixed orientation
