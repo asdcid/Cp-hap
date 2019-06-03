@@ -40,7 +40,7 @@ fi
 mkdir -p $outputDir
 
 #minimap2 output
-minimapOutput=$outputDir/$(basename $reads).pad
+minimapOutput=$outputDir/$(basename $reads).paf
 #combinations of different directions of single copy
 reference=$outputDir/dir_directions_$(basename $chloroplastGenome)
 #final output result
@@ -48,7 +48,7 @@ outputFile=$outputDir/result_$(basename $chloroplastGenome)_$(basename $reads)
 
 #get combinations of different direction of single copy
 echo "creating different references"
-python getDifferentDirectionCombine.py \
+python scripts/getDifferentDirectionCombine.py \
     $chloroplastGenome \
     $reference 
 
@@ -65,10 +65,11 @@ minimap2 \
 
 #check orientation ratio
 echo "parsing result"
-python parse.py \
+python scripts/parse.py \
     $chloroplastGenome \
     $outputFile \
-    $minimapOutput 
+    $minimapOutput \
+    1000
 
 
 
