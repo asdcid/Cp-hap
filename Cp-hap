@@ -8,7 +8,7 @@ SOURCE=$(dirname $0})/scripts/
 usage()
 {
 echo '''
-[SCID Single-Copy Inversion Dection, detect single-copy inversion in chloroplast genome using long-reads]
+[Cp-hap, chloroplast genome haplotype Dection, detect chloroplast genome structural heteroplasmy using long-reads]
 Usage: SCID -r reads -g chloroplastGenome.fa -o outputDir [options]
 Required:
     -r      the path of long-read file in fa/fq format, can be compressed(.gz).
