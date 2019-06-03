@@ -19,10 +19,11 @@ So far, only two structures are observed: the two single copies (long/short) wit
 
 In order to detect whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first created a reference set containing all 128 different chloroplast genome structures. Then we mapped all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), and calcuated the number of supported reads for each structure.
 
-The reads must be long enough to cover at least three conjunctions, otherwise it cannot uniquely map to one structure (The long single copy is duplicated here to make it clear). However, some chloroplast genomes only have one inverted repeat, therefore reads only need to cover at least two conjunctions to support the structure.
+To uniquely identify one of these 128 structures, a single sequencing read would need to cover at least some parts of all four regions (LSC, SSC and the two IR regions), for which the read would need to be at least 30-50 kb. This is because to cover all four regions, at a minimum a read must entirely cover the SSC (~20 kb) region and one IR region (10-30 kb) and at least partially cover the LSC region and the other IR region. However, there are not many reads have this length (~50kb). Therefore, Cp-hap pipeline assumes by default that the two large repeat regions are always inverted. When assuming that the IR regions are always inverted, there are only 32 uniquely identifiable chloroplast genome structural haplotypes. In this situation, a read only needs to entirely cover one IR region and partially cover the two adjacent LSC and SSC regions to provide evidence to uniquely identify one of the 32 structures.
+
 <p>
-  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/three_conjunction.jpg" />
- </p>
+  <img scr="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/Fig%20S1.%2032%20chloroplast%20genome%20sturctures.png"/>
+</p>
 
 In addition, the simple linearization of the chloroplast genome would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
 
