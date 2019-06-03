@@ -4,7 +4,7 @@ Detect the ratio of different orientations of single copies in the chloroplast g
 ## Background
 The chloroplast genome is a double-stranded DNA circular molecule of around 120 kb – 160 kb in size in most plants. The structure of chloroplast genome is highly conserved among plants, and usually consists of a long single copy and a short single copy region, separated by two identical inverted repeat regions. The length of inverted repeats usually ranges from 10 to 30 kb, although in extreme cases can be as short as 114 bp or as long as 76 kb, and in some species only one inverted repeat presents. However, the orientations of the two single copies (long/short) can be identical or different for those chloroplast genomes which have two inverted repeats. We called them haplotype A and haplotype B here.
 <p>
-  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/summary.jpg" />
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/summary.png" />
  </p>
 
 Long single copy, short single copy or inverted repeat can have four different orientations: original, reversed(r), complementary(c) and reversed complementary(rc). Technically, there are 256 different orientation combinations. However, half of them (128) are the complementary strand of the other half. Therefore, there are only 128 possible structures.
@@ -13,13 +13,22 @@ Long single copy, short single copy or inverted repeat can have four different o
  </p>
 
 
-In order to detect whether only two different structures present in the chloroplast genome, and compare the ratio between them, this pipeline first created a reference set containing all 128 different chloroplast genome structures. Then we mapped all long-reads to the genome file, filtered out reads failed to cover at least three conjunctions (lsc/ir, ir/ssc, ssc/ir or ir/lsc), and calcuated the number of supported reads for each structure.
-
 To uniquely identify one of these 128 structures, a single sequencing read would need to cover at least some parts of all four regions (LSC, SSC and the two IR regions), for which the read would need to be at least 30-50 kb. This is because to cover all four regions, at a minimum a read must entirely cover the SSC (~20 kb) region and one IR region (10-30 kb) and at least partially cover the LSC region and the other IR region. However, there are not many reads have this length (~50kb). Therefore, Cp-hap pipeline assumes by default that the two large repeat regions are always inverted. When assuming that the IR regions are always inverted, there are only 32 uniquely identifiable chloroplast genome structural haplotypes. 
 
 <p>
   <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/Fig S1. 32 chloroplast genome sturctures.png" />
 </p>
+
+```
+Structure name explanation
+LSC:    long single copy
+SSC:    short single copy
+IR: invert repeat
+
+r:  reversed sequence
+c:  complementary sequence
+rc: reversed complementary sequence
+```
 
 In this situation, a read only needs to entirely cover one IR region and partially cover the two adjacent LSC and SSC regions to provide evidence to uniquely identify one of the 32 structures.
 
@@ -31,8 +40,19 @@ In this situation, a read only needs to entirely cover one IR region and partial
 In addition, the simple linearization of the chloroplast genome would risk failing to capture reads that span the point at which the genomes were circularized. To avoid this, we duplicated and concatenated the sequence of each genome in the reference set.
 
 
-However, we acknowledge that the IR regions are not always the case. For example, the large repeat regions are positioned in-line instead of inverted in Selaginella tamariscina chloroplast genome (18). In cases such as this, Cp-hap pipeline is also able to figure out the structure. Here, we provide an example that how Cp-hap pipeline confirms a chloroplast genome with atypical structure, such as a paired of in-line repeats (Fig. S3C). Since Cp-hap duplicates and concatenates all default 32 structures (with IRs), reads from chloroplast genome with in-line repeats are able to map to Block A and/or C region of LSC_IR_SSC_IRrc structure (one of the 32 default structure in Cp-hap pipeline), or Block B region of LSC_IRrc_SSC_IR structure (the other default structure in Cp-hap pipeline). Those reads are impossible to map to Block B region of LSC_IR_SSC_IRrc, or Block A or C region of LSC_IRrc_SSC_IR. Therefore, if some reads only map to Block A and/or C region of LSC_IR_SSC_IRrc and Block B region of LSC_IRrc_SSC_IR, it suggests that the chloroplast genome acquires in-line repeats. 
+### Chloroplast genome with non-inverted repeats
+However, we acknowledge that the IR regions are not always the case. For example, the large repeat regions are positioned in-line instead of inverted in _Selaginella tamariscina_ chloroplast genome. 
 
+Chloroplast genome with in-line repeats
+<p>
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/hc.png"/>
+</p>
+
+In cases such as this, Cp-hap pipeline is also able to figure out the structure. Here, we provide an example that how Cp-hap pipeline confirms a chloroplast genome with atypical structure, such as a paired of in-line repeats. Since Cp-hap duplicates and concatenates all default 32 structures (with IRs), reads from chloroplast genome with in-line repeats are able to map to Block A and/or C region of LSC_IR_SSC_IRrc structure (one of the 32 default structure in Cp-hap pipeline), or Block B region of LSC_IRrc_SSC_IR structure (the other default structure in Cp-hap pipeline). Those reads are impossible to map to Block B region of LSC_IR_SSC_IRrc, or Block A or C region of LSC_IRrc_SSC_IR. Therefore, if some reads only map to Block A and/or C region of LSC_IR_SSC_IRrc and Block B region of LSC_IRrc_SSC_IR, it suggests that the chloroplast genome acquires in-line repeats. 
+
+<p>
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/in_line_repeat.png"/>
+</p>
 
 ## Requirement
 python2.7 or higher
@@ -91,16 +111,6 @@ Simply point out the minimap2 path in run_test.sh as describe above, then run ru
 Using the test result as an example, there are three outputFiles: dir_directions_Epau.format.fa (reference set, containing 128 different chloroplast genome structures), reads.fa.pad (minimap2 outputFile) and result_Epau.format.fa_reads.fa (final result file).
 
 In the final result file, the chloroplast genome structure is named in something like "LSC_IR_SSC_IRrc".
-```
-Structure name explanation
-LSC:    long single copy
-SSC:    short single copy
-IR: invert repeat
-
-r:  reversed sequence
-c:  complementary sequence
-rc: reversed complementary sequence
-```
 
 In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" (haplotype A) and "LSC_IR_SSCrc_IRrc" (haplotype B), which are the single copies (long/short) with the identical or different orientations. The orientation of inverted repeats should be identical between these two structures. And the number of reads supporting each structure should be similar (50% vs 50%) if you have enough reads covering at least three conjunctions (see above).
 
