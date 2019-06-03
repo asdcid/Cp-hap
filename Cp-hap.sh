@@ -9,7 +9,7 @@ usage()
 {
 echo '''
 [Cp-hap, chloroplast genome haplotype Dection, detect chloroplast genome structural heteroplasmy using long-reads]
-Usage: SCID -r reads -g chloroplastGenome.fa -o outputDir [options]
+Usage: bash Cp-hap.sh -r reads -g chloroplastGenome.fa -o outputDir [options]
 Required:
     -r      the path of long-read file in fa/fq format, can be compressed(.gz).
     -g      the path of chloroplast genome, chloroplast genome should be in fa format, not gzip. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It does not matter which oritentation is for lsc, ssc and ir.
@@ -122,7 +122,7 @@ echo 'MinDistance'                  $minDistance
 
 
 #minimap2 output
-minimapOutput=$outputDir/$(basename ${reads%.*}).pad
+minimapOutput=$outputDir/$(basename ${reads%.*}).paf
 #combinations of different directions of single copy
 reference=$outputDir/dir_directions_$(basename ${chloroplastGenome%.*})
 #final output result
