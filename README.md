@@ -18,13 +18,13 @@ In order to detect whether only two different structures present in the chloropl
 To uniquely identify one of these 128 structures, a single sequencing read would need to cover at least some parts of all four regions (LSC, SSC and the two IR regions), for which the read would need to be at least 30-50 kb. This is because to cover all four regions, at a minimum a read must entirely cover the SSC (~20 kb) region and one IR region (10-30 kb) and at least partially cover the LSC region and the other IR region. However, there are not many reads have this length (~50kb). Therefore, Cp-hap pipeline assumes by default that the two large repeat regions are always inverted. When assuming that the IR regions are always inverted, there are only 32 uniquely identifiable chloroplast genome structural haplotypes. 
 
 <p>
-  <img scr="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/Fig S1. 32 chloroplast genome sturctures.png" />
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/Fig S1. 32 chloroplast genome sturctures.png" />
 </p>
 
 In this situation, a read only needs to entirely cover one IR region and partially cover the two adjacent LSC and SSC regions to provide evidence to uniquely identify one of the 32 structures.
 
 <p>
-  <img scr="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/mapped.png"/>
+  <img src="https://github.com/asdcid/figures/blob/master/Chloroplast-genome-single-copy-orientation-ratio-detection/mapped.png"/>
 </p>
 
 
