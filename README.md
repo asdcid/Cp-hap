@@ -1,4 +1,4 @@
-# Chloroplast-genome-single-copy-orientation-ratio-detection (Cp-hap)
+# Chloroplast-genome-haplotype-ratio-detection (Cp-hap)
 Detect the ratio of different orientations of single copies in the chloroplast genome. 
 
 # IR fixed orientation
@@ -36,7 +36,7 @@ minimap2 (https://github.com/lh3/minimap2)
 ## Installation
 No installation required, just download the pipeline from github.
 ```
-git clone https://github.com/asdcid/Chloroplast-genome-single-copy-orientation-ratio-detection.git
+git clone https://github.com/asdcid/Cp-hap.git
 ```
 
 ## Usage
@@ -44,9 +44,9 @@ git clone https://github.com/asdcid/Chloroplast-genome-single-copy-orientation-r
 ```
 export PATH='/path/of/minimap2/':$PATH
 ```
-2. run SCID
+2. run Cp-hap.sh
 ```
-Usage: SCID -r reads -g chloroplastGenome.fa -o outputDir [options]
+Usage: bash Cp-hap.sh -r reads -g chloroplastGenome.fa -o outputDir [options]
 Required:
     -r      the path of long-read file in fa/fq format, can be compressed(.gz).
     -g      the path of chloroplast genome, chloroplast genome should be in fa format, not gzip. The chloroplast genome file should only have three sequences, named as 'lsc', 'ssc' and 'ir' (see testData/Epau.format.fa as an example). It does not matter which oritentation is for lsc, ssc and ir.
@@ -95,8 +95,7 @@ c:  complementary sequence
 rc: reversed complementary sequence
 ```
 
-In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" and "LSC_IR_SSCrc_IRrc", which are the single copies (long/short) with the identical or different orientations. The orientation of inverted repeats should be identical between these two structures. And the number of reads supporting each structure should be similar (50% vs 50%) if you have enough reads covering at least three conjunctions (see above).
+In general, only two structures will be observed, such as "LSC_IR_SSC_IRrc" (haplotype A) and "LSC_IR_SSCrc_IRrc" (haplotype B), which are the single copies (long/short) with the identical or different orientations. The orientation of inverted repeats should be identical between these two structures. And the number of reads supporting each structure should be similar (50% vs 50%) if you have enough reads covering at least three conjunctions (see above).
 
-However, if the ratio of these two structures is far away from 50% vs 50%, or you get only one structure or more than two structures, it suggests that the orientation of two "IR" are not inverted or there are some interesting stories behind your chloroplast genome. For example, the _Selaginella tamariscina_ chloroplast genome has a positioned repeats (two "inverted repeats" in the same orientation instead of inverted). In this case, two structure will be observed:LSCrc_IR_SSCrc_IRrc and LSC_IR_SSC_IRrc. 
-
+However, if you get two structures which are not different in the orientation of LSC/SSC (such as LSC_IR_SSC_IRrc and LSC_IRrc_SSC_IRrc), it suggests that your chloroplast genome have haplotypes which as different from the normal haplotype A and B. Under this case, the structure shown in the outputFile is not the real chloroplast haplotype. You need to manually check the mapped position of read to infer the real chloroplast genome structure (see above). For example, the Selaginella tamariscina chloroplast genome has a positioned repeats (two "inverted repeats" in the same orientation instead of inverted, LSC_IR_SSC_IR). In this case, two structure will be observed:LSCrc_IR_SSCrc_IRrc and LSC_IR_SSC_IRrc.
 
