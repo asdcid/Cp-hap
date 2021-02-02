@@ -70,7 +70,7 @@ do
       ;;
     x)
       readType=$OPTARG
-      if [ $readType != 'PacBio' -a $readType != 'ONT' ]   
+      if [ $readType != 'map-pb' -a $readType != 'map-ont' ]   
       then
           echo "ERROR: readType must be map-pb or map-ont."
           exit 1
